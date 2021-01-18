@@ -628,6 +628,13 @@
                                                 <action selector="toggleFullScreen:" target="Ady-hI-5gd" id="dU3-MA-1Rq"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="0GY-c2-K1M"/>
+                                        <menuItem title="Fixed Zoom" id="ErU-8F-BPI">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="toggleFixedZoom:" target="Ady-hI-5gd" id="0Mb-nc-5PX"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

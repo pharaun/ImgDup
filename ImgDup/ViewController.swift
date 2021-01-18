@@ -15,6 +15,25 @@ class ViewController: NSViewController {
     var currentIndex = 0
     var monitor: Any?
     
+    @IBAction func toggleFixedZoom(_ sender: NSMenuItem) {
+        switch sender.state {
+            case .on:
+                self.fixedZoom = false
+                sender.state = .off
+            case .off:
+                self.fixedZoom = true
+                sender.state = .on
+            case .mixed:
+                assertionFailure("No such thing as mixed")
+            default:
+                assertionFailure("Don't know how to handle: (sender.state)")
+        }
+    }
+    private var fixedZoom: Bool = false {
+        didSet {
+            print("Force fixed zoom now")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
