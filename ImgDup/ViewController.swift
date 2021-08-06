@@ -7,7 +7,9 @@
 
 import Cocoa
 
-private let kSpaceBar: UInt16 = 0x31
+// Keyboard bindings
+private let kLeftArrow: UInt16 = 0x7B
+private let kRightArrow: UInt16 = 0x7C
 
 class ViewController: NSViewController {
     @IBOutlet weak var imageView: NSImageView!
@@ -35,6 +37,28 @@ class ViewController: NSViewController {
         }
     }
     
+    @IBAction func toggleDefaultFullScreen(_ sender: NSMenuItem) {
+        switch sender.state {
+            case .on:
+                self.defaultFullScreen = false
+                sender.state = .off
+            case .off:
+                self.defaultFullScreen = true
+                sender.state = .on
+            case .mixed:
+                assertionFailure("No such thing as mixed")
+            default:
+                assertionFailure("Don't know how to handle: (sender.state)")
+        }
+    }
+    
+    private var defaultFullScreen: Bool = false {
+        didSet {
+            print("Force default full now")
+        }
+    }
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.imageScaling = .scaleProportionallyUpOrDown
@@ -63,8 +87,10 @@ class ViewController: NSViewController {
             matching: .keyDown
         ) {
             event -> NSEvent? in
-            if event.keyCode == kSpaceBar {
+            if event.keyCode ==  kRightArrow {
                 self.forward()
+            } else if event.keyCode == kLeftArrow {
+                self.backward()
             }
             return event
         }
@@ -84,6 +110,17 @@ class ViewController: NSViewController {
         currentIndex += 1
         if currentIndex >= images.count {
             currentIndex = 0
+        }
+        
+        self.imageView.image = NSImage(contentsOf: images[currentIndex])
+    }
+    
+    func backward() {
+        guard images.count > 0 else {return}
+        
+        currentIndex -= 1
+        if currentIndex < 0 {
+            currentIndex = images.count - 1
         }
         
         self.imageView.image = NSImage(contentsOf: images[currentIndex])
