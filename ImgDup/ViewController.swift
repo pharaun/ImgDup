@@ -86,6 +86,7 @@ class ViewController: NSViewController {
         if defaults.bool(forKey: "ForceFullScreen") {
             self.defaultFullScreen = true
             menuItem?.state = .on
+            view.window!.toggleFullScreen(true)
         } else {
             self.defaultFullScreen = false
             menuItem?.state = .off
