@@ -126,6 +126,7 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="toggleDefaultFullScreen:" target="Ady-hI-5gd" id="6kY-hy-bt0"/>
+                                                <binding destination="pQ7-wQ-oJk" name="value" keyPath="values.defaultFull" id="UtE-Mj-x7v"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Fixed Zoom" id="ErU-8F-BPI">
@@ -180,7 +181,11 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ImgDup" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
+                    <connections>
+                        <outlet property="mainMenu" destination="AYu-sK-qS6" id="Qlp-cK-Pf0"/>
+                    </connections>
+                </customObject>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="pQ7-wQ-oJk"/>

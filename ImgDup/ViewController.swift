@@ -13,6 +13,7 @@ private let kRightArrow: UInt16 = 0x7C
 
 class ViewController: NSViewController {
     @IBOutlet weak var imageView: NSImageView!
+    
     var images = [URL]()
     var currentIndex = 0
     var monitor: Any?
@@ -25,10 +26,8 @@ class ViewController: NSViewController {
             case .off:
                 self.fixedZoom = true
                 sender.state = .on
-            case .mixed:
-                assertionFailure("No such thing as mixed")
             default:
-                assertionFailure("Don't know how to handle: (sender.state)")
+                assertionFailure("Don't know how to handle: \(sender.state)")
         }
     }
     private var fixedZoom: Bool = false {
@@ -45,16 +44,15 @@ class ViewController: NSViewController {
             case .off:
                 self.defaultFullScreen = true
                 sender.state = .on
-            case .mixed:
-                assertionFailure("No such thing as mixed")
             default:
-                assertionFailure("Don't know how to handle: (sender.state)")
+                assertionFailure("Don't know how to handle: \(sender.state)")
         }
     }
     
     private var defaultFullScreen: Bool = false {
         didSet {
-            print("Force default full now")
+            let defaults = UserDefaults.standard
+            defaults.set(defaultFullScreen, forKey: "ForceFullScreen")
         }
     }
     
@@ -81,6 +79,20 @@ class ViewController: NSViewController {
     
     override func viewDidAppear() {
         super.viewDidAppear()
+        
+        let menuItem = NSApp.mainMenu?.item(withTitle: "View")?.submenu?.item(withTitle: "Default Full Screen")
+        
+        let defaults = UserDefaults.standard
+        if defaults.bool(forKey: "ForceFullScreen") {
+            self.defaultFullScreen = true
+            menuItem?.state = .on
+        } else {
+            self.defaultFullScreen = false
+            menuItem?.state = .off
+        }
+        
+
+        
         
         // Keyboard bits
         monitor = NSEvent.addLocalMonitorForEvents(
