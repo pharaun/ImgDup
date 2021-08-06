@@ -37,25 +37,18 @@ class ViewController: NSViewController {
     }
     
     @IBAction func toggleDefaultFullScreen(_ sender: NSMenuItem) {
+        let defaults = UserDefaults.standard
         switch sender.state {
             case .on:
-                self.defaultFullScreen = false
+                defaults.set(false, forKey: "ForceFullScreen")
                 sender.state = .off
             case .off:
-                self.defaultFullScreen = true
+                defaults.set(true, forKey: "ForceFullScreen")
                 sender.state = .on
             default:
                 assertionFailure("Don't know how to handle: \(sender.state)")
         }
     }
-    
-    private var defaultFullScreen: Bool = false {
-        didSet {
-            let defaults = UserDefaults.standard
-            defaults.set(defaultFullScreen, forKey: "ForceFullScreen")
-        }
-    }
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,16 +77,11 @@ class ViewController: NSViewController {
         
         let defaults = UserDefaults.standard
         if defaults.bool(forKey: "ForceFullScreen") {
-            self.defaultFullScreen = true
             menuItem?.state = .on
             view.window!.toggleFullScreen(true)
         } else {
-            self.defaultFullScreen = false
             menuItem?.state = .off
         }
-        
-
-        
         
         // Keyboard bits
         monitor = NSEvent.addLocalMonitorForEvents(
