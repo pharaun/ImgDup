@@ -1,3 +1,13 @@
+//
+//  PickDirectory.swift
+//  ImgDup
+//
+//  Created by Anja Berens on 1/3/26.
+//
+
+import SwiftUI
+internal import UniformTypeIdentifiers
+
 struct PickDirectory<Label: View>: View {
     @State private var showFileImporter = false
     var handlePickedDir: (URL) -> Void
@@ -11,7 +21,7 @@ struct PickDirectory<Label: View>: View {
         }
         .fileImporter(
             isPresented: $showFileImporter,
-            allowedContentTypes: [],
+            allowedContentTypes: [.folder],
             allowsMultipleSelection: false
         ) { result in
             switch result {
