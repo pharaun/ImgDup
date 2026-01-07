@@ -17,53 +17,19 @@ let localFileManager = FileManager()
 
 struct PickDest: View {
     @State private var dest: String = ""
-    @State private var path_choice = [
-        DestPath(path: "pics"),
-        DestPath(path: "asdf"),
-        DestPath(path: "foobar"),
-    ]
+    @State private var path_choice: [DestPath] = []
     
     var body: some View {
         VStack(alignment: .leading) {
             PickDirectory(handlePickedDir: { url in
                 // Clear the existing entries first
                 path_choice.removeAll()
-                
-                let resourceKeys = Set<URLResourceKey>([.isDirectoryKey, .pathKey])
-                
-                // Parent
-                guard let resourceValues = try? url.resourceValues(forKeys: resourceKeys),
-                      let parent_path = resourceValues.path
-                else {
-                    return
-                }
-                
-                // Descendants
-                let directoryEnumerator = localFileManager.enumerator(
-                    at: url,
-                    includingPropertiesForKeys: Array(resourceKeys),
-                    options: .skipsHiddenFiles,
-                )!
-                
-                for case let directoryURL as URL in directoryEnumerator {
-                    guard let resourceValues = try? directoryURL.resourceValues(forKeys: resourceKeys),
-                          let isDirectory = resourceValues.isDirectory,
-                          let path = resourceValues.path
-                    else {
-                        continue
+                PickDirHandler(
+                    url: url,
+                    closure: { path in
+                        path_choice.append(DestPath(path: path))
                     }
-                    
-                    if isDirectory {
-                        var new_path = String.init(
-                            path.suffix(from: parent_path.endIndex)
-                        )
-                        new_path.removeFirst(1)
-                        
-                        path_choice.append(
-                            DestPath(path: new_path)
-                        )
-                    }
-                }
+                )
             }, buttonLabel: Label("Dest", systemImage: "heart"))
             TextField("Dir",
                 text: $dest
@@ -71,6 +37,41 @@ struct PickDest: View {
             List(path_choice) {
                 Text($0.path)
             }
+        }
+    }
+}
+
+func PickDirHandler(url: URL, closure: (String) -> Void) {
+    let resourceKeys = Set<URLResourceKey>([.isDirectoryKey, .pathKey])
+    
+    // Parent
+    guard let resourceValues = try? url.resourceValues(forKeys: resourceKeys),
+          let parent_path = resourceValues.path
+    else {
+        return
+    }
+    
+    // Descendants
+    let directoryEnumerator = localFileManager.enumerator(
+        at: url,
+        includingPropertiesForKeys: Array(resourceKeys),
+        options: .skipsHiddenFiles,
+    )!
+    
+    for case let directoryURL as URL in directoryEnumerator {
+        guard let resourceValues = try? directoryURL.resourceValues(forKeys: resourceKeys),
+              let isDirectory = resourceValues.isDirectory,
+              let path = resourceValues.path
+        else {
+            continue
+        }
+        
+        if isDirectory {
+            var new_path = String.init(
+                path.suffix(from: parent_path.endIndex)
+            )
+            new_path.removeFirst(1)
+            closure(new_path)
         }
     }
 }
