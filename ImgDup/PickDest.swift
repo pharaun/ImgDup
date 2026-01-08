@@ -17,7 +17,11 @@ let localFileManager = FileManager()
 
 struct PickDest: View {
     @State private var dest: String = ""
-    @State private var path_choice: [DestPath] = []
+    @State private var path_choice: [DestPath] = [
+        DestPath(path: "Sample1"),
+        DestPath(path: "Sample2"),
+        DestPath(path: "Sample3"),
+    ]
     
     var body: some View {
         VStack(alignment: .leading) {
