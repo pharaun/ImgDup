@@ -82,52 +82,11 @@ struct PickDestView: View {
                 viewModel.update_choice(url: url)
             }, buttonLabel: Label("Dest", systemImage: "heart"))
             
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(
-                        Color(.secondaryLabelColor)
-                    )
-                
-                TextField(
-                    "Search",
-                    text: $viewModel.search_dest,
-                )
-                .textFieldStyle(.plain)
-                .padding(.vertical, 8)
-                .focused($isSearchFocused)
-                
-                if viewModel.search_dest != "" {
-                    Button(action: {
-                        viewModel.search_dest = ""
-                    }) {
-                        Image(
-                            systemName: "xmark.circle.fill"
-                        )
-                        .foregroundStyle(
-                            Color(.secondaryLabelColor)
-                        )
-                    }
-                    .padding(.horizontal, -8)
-                    .buttonStyle(.borderless)
-                }
-                
-                    
-            }
-            .padding(.horizontal)
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(
-                    cornerRadius: 20
-                ).stroke(
-                    isSearchFocused ? Color(.blue) :
-                    Color(.systemGray).opacity(0.3),
-                    lineWidth: isSearchFocused ? 2 : 1
-                )
-            )
-
+            SearchView(searchText: $viewModel.search_dest)
+            
             List(viewModel.path_choice) {
                 Text($0.path)
-            }.searchable(text: $viewModel.search_dest)
+            }
         }
     }
 }
