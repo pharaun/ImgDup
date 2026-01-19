@@ -89,7 +89,7 @@ struct PickDestView: View {
 
 
 #Preview {
-    var viewModel = PickDestView.ViewModel()
+    let viewModel = PickDestView.ViewModel()
     viewModel.path_choice = [
         DestPath(path: "asdf", url: URL(string: "asdf")!),
         DestPath(path: "basdf", url: URL(string: "basdf")!),

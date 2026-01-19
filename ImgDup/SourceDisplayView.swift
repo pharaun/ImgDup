@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceDisplay: View {
+struct SourceDisplayView: View {
     var body: some View {
         VStack(alignment: .leading) {
             PickDirectory(handlePickedDir: { url in
@@ -25,5 +25,5 @@ struct SourceDisplay: View {
 }
 
 #Preview {
-    SourceDisplay()
+    SourceDisplayView()
 }
